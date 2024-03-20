@@ -9,6 +9,7 @@ import pro.sky.employee.exception.EmployeeNotFoundException;
 import pro.sky.employee.exception.EmployeeStorageIsFullException;
 import pro.sky.employee.service.EmployeeService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -26,9 +27,7 @@ public class EmployeeController {
         Employee employee = new Employee(firstName, lastName);
         try {
             employeeService.addEmployee(employee);
-        } catch (EmployeeStorageIsFullException e) {
-            return e.getMessage();
-        } catch (EmployeeAlreadyAddedException e) {
+        } catch (EmployeeStorageIsFullException | EmployeeAlreadyAddedException e) {
             return e.getMessage();
         }
         return "Сотрудник " + employee.getFirstName() + " " + employee.getLastName() + " добавлен";
@@ -59,7 +58,7 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/employee")
-    public List<Employee> showAllEmployees() {
+    public HashMap<String,Employee> showAllEmployees() {
         return employeeService.showAllEmployees();
     }
 

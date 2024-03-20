@@ -6,19 +6,29 @@ import pro.sky.employee.exception.EmployeeNotFoundException;
 import pro.sky.employee.exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedMap;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     final int SIZE = 6;
 
-    List<Employee> employeeList = new ArrayList<>(List.of(
-            new Employee("Ivan", "Ivanov"),
-            new Employee("Semen", "Semenov"),
-            new Employee("Fedor", "Fedorov"),
-            new Employee("Freddy", "Kruger")
+    Map<String ,Employee> employeeList = new HashMap<>(Map.of(
+            "Ivan Ivanov",
+            new Employee(
+                    "Ivan",
+                    "Ivanov"),
+            "Semen Semenov",
+            new Employee(
+                    "Semen",
+                    "Semenov"),
+            "Fedor Fedorov",
+            new Employee(
+                    "Fedor",
+                    "Fedorov"),
+            "Freddy Kruger",
+            new Employee(
+                    "Freddy",
+                    "Kruger")
     ));
 
     @Override
@@ -30,17 +40,17 @@ public class EmployeeServiceImpl implements EmployeeService {
                             " Текущее количество сотрудников " + employeeList.size() +
                             ", " +
                             "Вы исчерпали лимит сотрудников");
-        } else if (employeeList.contains(employee)) {
+        } else if (employeeList.containsKey(employee.getFirstName() + " " + employee.getLastName())) {
             throw new EmployeeAlreadyAddedException("Такой сотрудник уже есть");
         } else {
-            employeeList.add(employee);
+            employeeList.put(employee.getFirstName() + " " + employee.getLastName(), employee);
         }
     }
 
     @Override
     public void deleteEmployee(Employee employee) throws EmployeeNotFoundException {
-        if (employeeList.contains(employee)) {
-            employeeList.remove(employee);
+        if (employeeList.containsKey(employee.getFirstName() + " " + employee.getLastName())) {
+            employeeList.remove(employee.getFirstName() + " " + employee.getLastName());
         } else {
             throw new EmployeeNotFoundException("Сотрудник не найден");
         }
@@ -48,7 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee searchEmployee(Employee employee) throws EmployeeNotFoundException {
-        if (employeeList.contains(employee)) {
+        if (employeeList.containsKey(employee.getFirstName() + " " + employee.getLastName())) {
             return employee;
         } else {
             throw new EmployeeNotFoundException("Сотрудник не найден");
@@ -56,7 +66,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> showAllEmployees() {
-        return employeeList;
+    public HashMap<String, Employee> showAllEmployees() {
+        return (HashMap<String, Employee>) employeeList;
     }
 }
