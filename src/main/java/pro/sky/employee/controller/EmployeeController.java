@@ -10,8 +10,6 @@ import pro.sky.employee.exception.EmployeeStorageIsFullException;
 import pro.sky.employee.service.EmployeeService;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.SortedMap;
 
 @RestController
 public class EmployeeController {
@@ -23,8 +21,10 @@ public class EmployeeController {
 
     @GetMapping(path = "/employee/add")
     public String addEmployee(@RequestParam("firstName") String firstName,
-                              @RequestParam("lastName") String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+                              @RequestParam("lastName") String lastName,
+                              @RequestParam ("department") int department,
+                              @RequestParam("salary") double salary) {
+        Employee employee = new Employee(firstName, lastName, department, salary);
         try {
             employeeService.addEmployee(employee);
         } catch (EmployeeStorageIsFullException | EmployeeAlreadyAddedException e) {
@@ -35,30 +35,30 @@ public class EmployeeController {
 
     @GetMapping(path = "/employee/remove")
     public String deleteEmployee(@RequestParam("firstName") String firstName,
-                                 @RequestParam("lastName") String lastName) {
-        Employee employee = new Employee((firstName), lastName);
+                                 @RequestParam("lastName") String lastName){
+       String employee = firstName + " " + lastName;
         try {
             employeeService.deleteEmployee(employee);
         } catch (EmployeeNotFoundException e) {
             return e.getMessage();
         }
-        return "Сотрудник " + employee.getFirstName() + " " + employee.getLastName() + " удален";
+        return "Сотрудник "+ employee + " удален";
     }
 
     @GetMapping(path = "/employee/find")
     public String searchEmployee(@RequestParam("firstName") String firstName,
-                                 @RequestParam("lastName") String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+                                 @RequestParam("lastName") String lastName){
+       String employee = firstName + " " + lastName;
         try {
             employeeService.searchEmployee(employee);
         } catch (EmployeeNotFoundException e) {
             return e.getMessage();
         }
-        return "Сотрудник " + employee.getFirstName() + " " + employee.getLastName() + " найден";
+        return "Сотрудник " + employee + " найден";
     }
 
     @GetMapping(path = "/employee")
-    public HashMap<String,Employee> showAllEmployees() {
+    public HashMap<String, Employee> showAllEmployees() {
         return employeeService.showAllEmployees();
     }
 

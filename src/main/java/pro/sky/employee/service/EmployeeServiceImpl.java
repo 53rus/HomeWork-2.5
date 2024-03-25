@@ -10,25 +10,46 @@ import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    final int SIZE = 6;
+    final int SIZE = 10;
 
-    Map<String ,Employee> employeeList = new HashMap<>(Map.of(
+    HashMap<String, Employee> employeeList = new HashMap<>(Map.of(
             "Ivan Ivanov",
             new Employee(
                     "Ivan",
-                    "Ivanov"),
+                    "Ivanov",
+                    1,
+                    10_000),
             "Semen Semenov",
             new Employee(
                     "Semen",
-                    "Semenov"),
+                    "Semenov",
+                    1,
+                    11_000),
             "Fedor Fedorov",
             new Employee(
                     "Fedor",
-                    "Fedorov"),
+                    "Fedorov",
+                    2,
+                    20_000),
             "Freddy Kruger",
             new Employee(
                     "Freddy",
-                    "Kruger")
+                    "Kruger",
+                    2,
+                    21_000),
+            "Anton Antonov",
+            new Employee(
+                    "Anton",
+                    "Antonov",
+                    1,
+                    30_000),
+            "Leonid Leonidov",
+            new Employee(
+                    "Leonid",
+                    "Leonidov",
+                    3,
+                    31_000)
+
     ));
 
     @Override
@@ -48,18 +69,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployee(Employee employee) throws EmployeeNotFoundException {
-        if (employeeList.containsKey(employee.getFirstName() + " " + employee.getLastName())) {
-            employeeList.remove(employee.getFirstName() + " " + employee.getLastName());
+    public void deleteEmployee(String employee) throws EmployeeNotFoundException {
+        if (employeeList.containsKey(employee)) {
+            employeeList.remove(employee);
         } else {
             throw new EmployeeNotFoundException("Сотрудник не найден");
         }
     }
 
     @Override
-    public Employee searchEmployee(Employee employee) throws EmployeeNotFoundException {
-        if (employeeList.containsKey(employee.getFirstName() + " " + employee.getLastName())) {
-            return employee;
+    public void searchEmployee(String employee) throws EmployeeNotFoundException {
+        if (employeeList.containsKey(employee)) {
         } else {
             throw new EmployeeNotFoundException("Сотрудник не найден");
         }
@@ -67,6 +87,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public HashMap<String, Employee> showAllEmployees() {
-        return (HashMap<String, Employee>) employeeList;
+        return employeeList;
     }
 }

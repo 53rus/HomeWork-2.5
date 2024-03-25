@@ -6,16 +6,14 @@ import pro.sky.employee.exception.EmployeeNotFoundException;
 import pro.sky.employee.exception.EmployeeStorageIsFullException;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.SortedMap;
 
 public interface EmployeeService {
 
-    void addEmployee(Employee employee) throws EmployeeAlreadyAddedException, EmployeeStorageIsFullException;
+   void addEmployee(Employee employee) throws EmployeeAlreadyAddedException, EmployeeStorageIsFullException;
 
-    void deleteEmployee(Employee employee) throws EmployeeNotFoundException;
+    void deleteEmployee(String employee) throws EmployeeNotFoundException;
 
-    Employee searchEmployee(Employee employee) throws EmployeeNotFoundException;
+    void searchEmployee(String employee) throws EmployeeNotFoundException;
 
     HashMap<String, Employee> showAllEmployees();
 }
